@@ -3,21 +3,80 @@ import QtQuick.Window 2.10
 import QtQuick.Controls 2.2
 
 Window {
-    visible: true
     visibility: Window.FullScreen
+    visible: true
+    //width: Screen.width
+    //height: Screen.height
 
+    FontLoader{
+        id: coolvetica
+        name: "coolvetica"
+        source: "/fonts/coolvetica.ttf"
+    }
 
-    ScrollView {
+    Image{
+        id: background
         anchors.fill: parent
-
-        ListView {
-            width: parent.width
-            model: 20
-            delegate: ItemDelegate {
-                text: "Item " + (index + 1)
-                width: parent.width
+        source: "/images/background.png"
+        Column{
+            anchors.centerIn: parent
+            Image {
+                id: header
+                source: "/images/header.png"
+                anchors.horizontalCenter: parent.horizontalCenter
+                Text {
+                    id: mqcTitulo
+                    text: qsTr("Minha Querida Casa")
+                    font.family: coolvetica.name
+                    font.pixelSize: 40
+                    anchors.centerIn: header
+                    color: "#b73735"
+                }
             }
+            Row{
+                spacing: 50
+                anchors.horizontalCenter: parent.horizontalCenter
+                Botao{
+                    id: botaoCadastrar
+                    texto: "Login"
+                    comprimento: background.width/3 - 150
+                    raio: 10
+                    tamFonte: 35
+                    altura: background.height/7
+                    cor: "white"
+                    corTexto: "#68a897"
+                    onClicked: mainScreen.state = "Login"
+                }
+                Botao{
+                    id: botaoJaCadastrado
+                    raio: 10
+                    texto: "Cadastre-se"
+                    comprimento: background.width/3 - 150
+                    altura: background.height/7
+                    tamFonte: 35
+                    cor: "white"
+                    corTexto: "#68a897"
+                    onClicked: mainScreen.state = "Cadastro"
+                }
+            }
+
         }
+    }
+
+    Item{
+        id: mainScreen
+        state: "EstadoInicial"
+        states: [
+            State {
+                name: "Login"
+            },
+            State{
+                name: "Cadastro"
+            },
+            State{
+                name: "Servicos"
+            }
+        ]
     }
 
 
@@ -31,14 +90,9 @@ Window {
         anchors.fill: parent
         visible: mainScreen.state == "Login"
     }
-    Atendente{
-        id: atendente
+    Servicos{
+        id: servicos
         anchors.fill: parent
-        visible: mainScreen.state == "Atendente"
-    }
-    Supervisor{
-        id: supervisor
-        anchors.fill: parent
-        visible: mainScreen.state == "Supervisor"
+        visible: mainScreen.state == "Servicos"
     }
 }
